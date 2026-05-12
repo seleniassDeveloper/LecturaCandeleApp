@@ -1,0 +1,2 @@
+# Opcional: instalar solo cuando quieras exportar o inferir con el grafo Keras.
+tensorflow==2.16.2

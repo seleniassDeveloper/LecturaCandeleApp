@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#121018" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="Lectura asistida de velas: llama, cera y residuos." />
+  <title>Ceromancia CV</title>
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="bg-aurora" aria-hidden="true"></div>
+  <div class="mystic-field" aria-hidden="true">
+    <div class="mystic-grid"></div>
+    <div class="nebula nebula--a"></div>
+    <div class="nebula nebula--b"></div>
+    <div class="nebula nebula--c"></div>
+    <div class="sigil-ring"></div>
+    <div class="star-dust"></div>
+  </div>
+  <div class="bg-noise" aria-hidden="true"></div>
+  <div class="ember-layer" aria-hidden="true">
+    <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+    <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+    <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+    <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+    <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+    <span class="ember"></span><span class="ember"></span>
+  </div>
+
+  <div class="page page--studio">
+    <div class="app-shell app-shell--studio">
+      <header class="shell-header">
+        <div class="lang-switch" role="group" data-i18n-aria="lang_aria" aria-label="Idioma">
+          <button type="button" class="lang-btn lang-btn--active" data-lang="es" aria-pressed="true">ES</button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" class="lang-btn" data-lang="pt" aria-pressed="false">PT</button>
+        </div>
+        <p class="shell-kicker" data-i18n="shell_kicker">Lectura asistida</p>
+        <h1 class="shell-title" data-i18n="shell_title">Ceromancia</h1>
+        <nav class="tab-strip" aria-label="Secciones">
+          <a href="#sec-vela" class="tab tab--active" data-i18n="tab_vela">Tu vela</a>
+          <a href="#sec-intencion" class="tab" data-i18n="tab_intention">Intención · opc.</a>
+          <a href="#results" class="tab" data-i18n="tab_reading">Lectura</a>
+        </nav>
+      </header>
+
+      <div class="shell-body shell-body--studio">
+        <div class="inner-toolbar" aria-hidden="true">
+          <span class="tb-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="tb-toggle" aria-hidden="true">
+            <span class="tb-dot"></span>
+            <span class="tb-dot tb-dot--on"></span>
+            <span class="tb-dot"></span>
+          </span>
+          <span class="tb-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 16v-5M12 8h.01" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </div>
+
+        <section id="uploadPanel" class="flow-section" aria-labelledby="sec-vela">
+          <h2 id="sec-vela" class="block-title" tabindex="-1" data-i18n="block_your_image">Tu imagen</h2>
+          <p class="shell-instructions" data-i18n="shell_instructions_html" data-i18n-html="1">
+            Foto nítida de la vela encendida. La intención es <strong>opcional</strong>; si la escribes, el análisis y las pistas se afinan con más precisión. Luego <strong>Analizar</strong>.
+          </p>
+
+          <label class="dropzone" id="dropzone">
+            <span class="dropzone-visual" aria-hidden="true">
+              <span class="dropzone-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 4v12m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 17v1a2 2 0 002 2h12a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span class="dropzone-title" data-i18n="dropzone_title">Toca para elegir foto</span>
+              <span class="dropzone-hint" data-i18n="dropzone_hint" data-i18n-html="1">Cámara o galería · JPEG, PNG, HEIC · máx. 12&nbsp;MB</span>
+            </span>
+            <input
+              type="file"
+              id="file"
+              name="file"
+              accept="image/*,image/heic,image/heif,.heic,.heif"
+              class="file-input-overlay"
+            />
+          </label>
+          <p class="file-status" id="fileStatus" hidden aria-live="polite"></p>
+          <button type="button" class="btn-ghost" id="changePhotoBtn" hidden data-i18n="change_photo">Cambiar foto</button>
+
+          <div class="preview-wrap" id="previewWrap" hidden>
+            <div class="preview-frame">
+              <img id="preview" class="preview-img" alt="Vista previa de la foto" data-i18n-alt="preview_alt" />
+            </div>
+            <p class="preview-note" id="previewNote" hidden></p>
+          </div>
+        </section>
+
+        <div class="section-rule" role="presentation"></div>
+
+        <section class="flow-section intention-block" id="intentionBlock" aria-labelledby="sec-intencion">
+          <h2 id="sec-intencion" class="block-title" tabindex="-1" data-i18n="block_intention_title">Intención (opcional)</h2>
+          <p class="intention-lede" data-i18n="intention_lede">
+            Puedes dejarlo vacío. Si indicas para qué encendiste la vela o qué contexto importa, la lectura y «Otras pistas» se ajustan con más precisión.
+          </p>
+          <label for="intencion" class="sr-only" data-i18n="sr_only_intention">Intención opcional para afinar la lectura</label>
+          <textarea
+            id="intencion"
+            class="intention-textarea"
+            name="intencion"
+            maxlength="400"
+            rows="2"
+            data-i18n-placeholder="intention_placeholder"
+            placeholder="Ej.: trabajo, familia, agradecer, protección… (opcional, para más precisión)"
+          ></textarea>
+          <p class="intention-counter" id="intencionCounter" aria-live="polite">0 / 400</p>
+          <div class="intention-context-head">
+            <span class="intention-quick-label" data-i18n="context_label">Contexto</span>
+            <span class="intention-quick-hint" data-i18n="context_hint">Opcional · más precisión si eliges uno</span>
+          </div>
+          <div class="intention-chips intention-chips--cloud" role="group" aria-label="Contexto opcional para afinar la precisión">
+            <button type="button" class="chip chip--tile" data-intent-id="trabajo"><span class="chip-glow chip-glow--coral"></span><span class="chip-label">Trabajo</span></button>
+            <button type="button" class="chip chip--tile" data-intent-id="amor"><span class="chip-glow chip-glow--rose"></span><span class="chip-label">Amor</span></button>
+            <button type="button" class="chip chip--tile" data-intent-id="dinero"><span class="chip-glow chip-glow--mint"></span><span class="chip-label">Dinero</span></button>
+            <button type="button" class="chip chip--tile" data-intent-id="proteccion"><span class="chip-glow chip-glow--sky"></span><span class="chip-label">Protección</span></button>
+            <button type="button" class="chip chip--tile" data-intent-id="salud"><span class="chip-glow chip-glow--lav"></span><span class="chip-label">Salud</span></button>
+            <button type="button" class="chip chip--tile" data-intent-id="guia"><span class="chip-glow chip-glow--gold"></span><span class="chip-label">Guía</span></button>
+          </div>
+        </section>
+
+        <button type="button" class="btn-primary" id="analyzeBtn" disabled>
+          <span class="btn-primary-label">Analizar imagen</span>
+        </button>
+        <p class="form-error" id="error" role="alert" hidden></p>
+      </div>
+    </div>
+
+    <section class="app-shell app-shell--results" id="results" hidden aria-labelledby="results-heading">
+      <div class="shell-body shell-body--compact">
+        <div class="inner-toolbar inner-toolbar--sm" aria-hidden="true">
+          <span class="tb-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 3a7 7 0 017 7v1h-2M5 11a7 7 0 017-7" stroke-linecap="round"/>
+              <path d="M12 22V12" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="tb-label" data-i18n="tb_your_reading">Tu lectura</span>
+          <span class="tb-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 6h16M4 12h16M4 18h7" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </div>
+        <h2 id="results-heading" class="block-title block-title--accent" data-i18n="results_heading">Signo y mensaje</h2>
+        <div id="intentionBridge" class="intention-bridge" hidden></div>
+        <div id="principal" class="card card--principal"></div>
+
+        <h3 class="subheading" id="alt-heading" data-i18n="subheading_other_clues">Otras pistas</h3>
+        <ul id="alternatives" class="alt-cards" aria-labelledby="alt-heading"></ul>
+
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p data-i18n="footer_disclaimer">
+        Las lecturas son orientativas. No sustituyen el criterio humano ni prácticas espirituales reales.
+      </p>
+    </footer>
+  </div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <script src="/static/i18n.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
