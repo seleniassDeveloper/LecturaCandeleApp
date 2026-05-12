@@ -1,5 +1,5 @@
 /* Ceromancia CV — PWA */
-const CACHE = "ceromancia-cv-v16";
+const CACHE = "ceromancia-cv-v20";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

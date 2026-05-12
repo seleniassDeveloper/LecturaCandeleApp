@@ -20,6 +20,8 @@
       block_your_image: "Tu imagen",
       shell_instructions_html:
         "Foto nítida de la vela encendida. La intención es <strong>opcional</strong>; si la escribes, el análisis y las pistas se afinan con más precisión. Luego <strong>Analizar</strong>.",
+      shell_instructions_step1_html:
+        "Elige o arrastra una foto <strong>nítida</strong> de la vela encendida. Formatos JPEG, PNG o HEIC (máx. 12&nbsp;MB).",
       dropzone_title: "Toca para elegir foto",
       dropzone_hint: "Cámara o galería · JPEG, PNG, HEIC · máx. 12&nbsp;MB",
       change_photo: "Cambiar foto",
@@ -36,11 +38,16 @@
       chips_group_aria: "Contexto opcional para afinar la precisión",
       btn_analyze: "Analizar imagen",
       btn_analyzing: "Analizando…",
+      btn_continue: "Siguiente",
+      btn_back: "Atrás",
+      btn_new_reading: "Nueva lectura",
       results_heading: "Signo y mensaje",
       tb_your_reading: "Tu lectura",
       subheading_other_clues: "Otras pistas",
       footer_disclaimer:
         "Las lecturas son orientativas. No sustituyen el criterio humano ni prácticas espirituales reales.",
+      footer_mystic_quote:
+        "La luz que enciendes afuera también ilumina tu camino interior.",
       bridge_label: "Tu intención",
       confidence_aria: "Confianza del modelo",
       confidence_line: "{pct}% de confianza",
@@ -83,6 +90,8 @@
       block_your_image: "Your photo",
       shell_instructions_html:
         "A clear photo of the lit candle. <strong>Intention is optional</strong>; if you add it, the analysis and hints become more precise. Then tap <strong>Analyze</strong>.",
+      shell_instructions_step1_html:
+        "Choose or drag a <strong>clear</strong> photo of the lit candle. JPEG, PNG, or HEIC (max 12&nbsp;MB).",
       dropzone_title: "Tap to choose photo",
       dropzone_hint: "Camera or library · JPEG, PNG, HEIC · max 12&nbsp;MB",
       change_photo: "Change photo",
@@ -99,11 +108,16 @@
       chips_group_aria: "Optional context to refine precision",
       btn_analyze: "Analyze image",
       btn_analyzing: "Analyzing…",
+      btn_continue: "Next",
+      btn_back: "Back",
+      btn_new_reading: "New reading",
       results_heading: "Sign and message",
       tb_your_reading: "Your reading",
       subheading_other_clues: "Other hints",
       footer_disclaimer:
         "Readings are for guidance. They do not replace human judgment or real spiritual practice.",
+      footer_mystic_quote:
+        "The light you kindle outside also lights your inner path.",
       bridge_label: "Your intention",
       confidence_aria: "Model confidence",
       confidence_line: "{pct}% confidence",
@@ -146,6 +160,8 @@
       block_your_image: "Sua foto",
       shell_instructions_html:
         "Foto nítida da vela acesa. A intenção é <strong>opcional</strong>; se você escrever, a análise e as pistas ficam mais precisas. Depois <strong>Analisar</strong>.",
+      shell_instructions_step1_html:
+        "Escolha ou arraste uma foto <strong>nítida</strong> da vela acesa. JPEG, PNG ou HEIC (máx. 12&nbsp;MB).",
       dropzone_title: "Toque para escolher foto",
       dropzone_hint: "Câmera ou galeria · JPEG, PNG, HEIC · máx. 12&nbsp;MB",
       change_photo: "Trocar foto",
@@ -162,11 +178,16 @@
       chips_group_aria: "Contexto opcional para afinar a precisão",
       btn_analyze: "Analisar imagem",
       btn_analyzing: "Analisando…",
+      btn_continue: "Seguinte",
+      btn_back: "Voltar",
+      btn_new_reading: "Nova leitura",
       results_heading: "Sinal e mensagem",
       tb_your_reading: "Sua leitura",
       subheading_other_clues: "Outras pistas",
       footer_disclaimer:
         "As leituras são orientativas. Não substituem o julgamento humano nem práticas espirituais reais.",
+      footer_mystic_quote:
+        "A luz que você acende lá fora também ilumina seu caminho interior.",
       bridge_label: "Sua intenção",
       confidence_aria: "Confiança do modelo",
       confidence_line: "{pct}% de confiança",
@@ -324,7 +345,7 @@
     if (chips) chips.setAttribute("aria-label", t(l, "chips_group_aria"));
 
     const analyzeBtn = document.getElementById("analyzeBtn");
-    const lbl = document.querySelector(".btn-primary-label");
+    const lbl = analyzeBtn?.querySelector(".btn-primary-label");
     if (lbl && analyzeBtn) {
       if (analyzeBtn.dataset.analyzing === "1") {
         lbl.textContent = t(l, "btn_analyzing");

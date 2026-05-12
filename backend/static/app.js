@@ -7,6 +7,16 @@ function T(key, vars) {
   return key;
 }
 
+const appPage = $("appPage");
+const wizardStudioBody = $("wizardStudioBody");
+const wizardStep1 = $("wizardStep1");
+const wizardStep2 = $("wizardStep2");
+const wizardContinueBtn = $("wizardContinueBtn");
+const wizardBackBtn = $("wizardBackBtn");
+const newReadingBtn = $("newReadingBtn");
+const stepperBtn3 = $("stepperBtn3");
+const appFooter = $("appFooter");
+
 const uploadPanel = $("uploadPanel");
 const dropzone = $("dropzone");
 const fileInput = $("file");
@@ -26,6 +36,8 @@ const alternatives = $("alternatives");
 
 let selectedFile = null;
 let previewObjectUrl = null;
+let wizardStep = 1;
+let readingReady = false;
 
 function showError(msg) {
   errorEl.textContent = msg;
@@ -36,6 +48,78 @@ function formatBytes(n) {
   if (n < 1024) return `${n} B`;
   if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
   return `${(n / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function syncWizardContinue() {
+  if (wizardContinueBtn) wizardContinueBtn.disabled = !selectedFile;
+}
+
+function updateStepperUI() {
+  document.querySelectorAll("[data-wizard-go]").forEach((btn) => {
+    const step = parseInt(btn.getAttribute("data-wizard-go"), 10);
+    if (!Number.isFinite(step)) return;
+    const active = step === wizardStep;
+    btn.classList.toggle("tab--active", active);
+    if (active) btn.setAttribute("aria-current", "step");
+    else btn.removeAttribute("aria-current");
+  });
+  if (stepperBtn3) stepperBtn3.disabled = !readingReady;
+}
+
+function goToStep(n) {
+  if (n === 2 && !selectedFile) return;
+  if (n === 3 && !readingReady) return;
+  wizardStep = n;
+  if (appPage) appPage.setAttribute("data-wizard-step", String(n));
+
+  if (n === 3) {
+    if (wizardStudioBody) wizardStudioBody.hidden = true;
+    if (results) results.hidden = false;
+    if (appFooter) appFooter.hidden = true;
+  } else {
+    if (wizardStudioBody) wizardStudioBody.hidden = false;
+    if (results) results.hidden = true;
+    if (appFooter) appFooter.hidden = false;
+    if (wizardStep1) wizardStep1.hidden = n !== 1;
+    if (wizardStep2) wizardStep2.hidden = n !== 2;
+  }
+  updateStepperUI();
+  window.scrollTo(0, 0);
+}
+
+function resetWizard() {
+  readingReady = false;
+  selectedFile = null;
+  showError("");
+  if (previewObjectUrl) {
+    URL.revokeObjectURL(previewObjectUrl);
+    previewObjectUrl = null;
+  }
+  if (preview) preview.removeAttribute("src");
+  if (previewWrap) previewWrap.hidden = true;
+  if (previewNote) {
+    previewNote.hidden = true;
+    previewNote.textContent = "";
+  }
+  if (fileStatus) fileStatus.hidden = true;
+  if (changePhotoBtn) changePhotoBtn.hidden = true;
+  if (intencionEl) intencionEl.value = "";
+  updateIntencionCounter();
+  if (principal) principal.innerHTML = "";
+  if (alternatives) alternatives.innerHTML = "";
+  if (intentionBridge) {
+    intentionBridge.hidden = true;
+    intentionBridge.innerHTML = "";
+  }
+  if (analyzeBtn) {
+    analyzeBtn.disabled = true;
+    delete analyzeBtn.dataset.analyzing;
+  }
+  syncWizardContinue();
+  goToStep(1);
+  if (typeof window.CeromanciaI18n !== "undefined") {
+    window.CeromanciaI18n.apply();
+  }
 }
 
 function updateIntencionCounter() {
@@ -83,7 +167,6 @@ function isLikelyImageFile(file) {
   }
   const n = (file.name || "").toLowerCase();
   if (/\.(heic|heif|jpg|jpeg|png|webp|gif|bmp|tif|tiff|avif)$/i.test(n)) return true;
-  // iPhone a veces deja MIME vacío pero el archivo viene de Fotos
   if (!t && file.size > 200 && file.size < 40 * 1024 * 1024) {
     if (!n || /^img_\d+\.(heic|jpg|jpeg|png)$/i.test(n) || /^image\./i.test(n)) return true;
   }
@@ -137,7 +220,8 @@ function setFile(file) {
   }
 
   previewWrap.hidden = false;
-  analyzeBtn.disabled = false;
+  if (analyzeBtn) analyzeBtn.disabled = false;
+  syncWizardContinue();
 }
 
 fileInput.addEventListener("change", (e) => {
@@ -180,6 +264,9 @@ function renderIntentionBridge(data) {
       <p class="intention-bridge-quote">«${escapeHtml(data.intencion_recibida)}»</p>
       <p class="intention-bridge-text">${escapeHtml(data.puente_intencion)}</p>
     `;
+    if (typeof window.CeromanciaI18n !== "undefined") {
+      window.CeromanciaI18n.apply();
+    }
   } else {
     intentionBridge.hidden = true;
     intentionBridge.innerHTML = "";
@@ -196,12 +283,17 @@ function renderPrincipal(p) {
       : (p.interpretacion || "").trim();
   const pct = (p.probabilidad * 100).toFixed(0);
   principal.innerHTML = `
-    <h3 class="card-title">${escapeHtml(p.nombre)}</h3>
-    <p class="card-confidence" aria-label="${escapeHtml(T("confidence_aria"))}">
-      ${escapeHtml(T("confidence_line", { pct }))}
-    </p>
-    <ul class="card-tags">${tags}</ul>
-    <p class="card-body">${escapeHtml(simbolico)}</p>
+    <div class="reading-oracle">
+      <div class="reading-oracle__corners" aria-hidden="true"></div>
+      <p class="reading-oracle__glyph" aria-hidden="true">✦</p>
+      <h3 class="reading-oracle__title">${escapeHtml(p.nombre)}</h3>
+      <p class="reading-oracle__confidence" aria-label="${escapeHtml(T("confidence_aria"))}">
+        ${escapeHtml(T("confidence_line", { pct }))}
+      </p>
+      <ul class="reading-oracle__tags">${tags}</ul>
+      <div class="reading-oracle__divider" aria-hidden="true"></div>
+      <p class="reading-oracle__body">${escapeHtml(simbolico)}</p>
+    </div>
   `;
 }
 
@@ -214,10 +306,13 @@ function renderAlternatives(items) {
           : (p.interpretacion || "").trim();
       const pct = (p.probabilidad * 100).toFixed(0);
       return `
-    <li>
-      <span class="alt-name">${escapeHtml(p.nombre)}</span>
-      <span class="alt-pct">${escapeHtml(T("alt_probability_line", { pct }))}</span>
-      <p class="alt-body">${escapeHtml(cuerpo)}</p>
+    <li class="reading-hint-card">
+      <span class="reading-hint-card__glyph" aria-hidden="true">◇</span>
+      <div class="reading-hint-card__main">
+        <span class="reading-hint-card__name">${escapeHtml(p.nombre)}</span>
+        <span class="reading-hint-card__pct">${escapeHtml(T("alt_probability_line", { pct }))}</span>
+        <p class="reading-hint-card__body">${escapeHtml(cuerpo)}</p>
+      </div>
     </li>`;
     })
     .join("");
@@ -237,21 +332,29 @@ if ("serviceWorker" in navigator && window.isSecureContext) {
   });
 }
 
-document.querySelectorAll(".tab-strip a.tab").forEach((tab) => {
-  tab.addEventListener("click", (ev) => {
-    const href = tab.getAttribute("href");
-    if (href && href.startsWith("#")) {
-      const target = document.querySelector(href);
-      const studioBody = document.querySelector(".shell-body--studio");
-      if (target && studioBody && studioBody.contains(target)) {
-        ev.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-    document.querySelectorAll(".tab-strip a.tab").forEach((t) => t.classList.remove("tab--active"));
-    tab.classList.add("tab--active");
+document.querySelectorAll("[data-wizard-go]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const step = parseInt(btn.getAttribute("data-wizard-go"), 10);
+    if (!Number.isFinite(step)) return;
+    goToStep(step);
   });
 });
+
+wizardContinueBtn?.addEventListener("click", () => {
+  if (!selectedFile) return;
+  goToStep(2);
+});
+
+wizardBackBtn?.addEventListener("click", () => {
+  goToStep(1);
+});
+
+newReadingBtn?.addEventListener("click", () => {
+  resetWizard();
+});
+
+goToStep(1);
+syncWizardContinue();
 
 analyzeBtn.addEventListener("click", async () => {
   if (!selectedFile) return;
@@ -260,7 +363,6 @@ analyzeBtn.addEventListener("click", async () => {
   analyzeBtn.dataset.analyzing = "1";
   const label = analyzeBtn.querySelector(".btn-primary-label");
   if (label) label.textContent = T("btn_analyzing");
-  results.hidden = true;
   try {
     const fd = new FormData();
     fd.append("file", selectedFile, selectedFile.name || "photo.jpg");
@@ -289,12 +391,9 @@ analyzeBtn.addEventListener("click", async () => {
     renderIntentionBridge(data);
     renderPrincipal(data.patron_principal);
     renderAlternatives(data.patrones.slice(1));
-    results.hidden = false;
-    document.querySelectorAll(".tab-strip a.tab").forEach((t) => t.classList.remove("tab--active"));
-    document.querySelector('.tab-strip a.tab[href="#results"]')?.classList.add("tab--active");
-    requestAnimationFrame(() => {
-      results.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    readingReady = true;
+    updateStepperUI();
+    goToStep(3);
   } catch (e) {
     showError(e.message || T("err_analyze_fallback"));
   } finally {
