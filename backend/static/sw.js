@@ -1,17 +1,12 @@
 /* Ceromancia CV — PWA */
-const CACHE = "ceromancia-cv-v20";
+const CACHE = "ceromancia-cv-v27";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(CACHE)
       .then((cache) =>
-        cache.addAll([
-          "/static/styles.css",
-          "/static/i18n.js",
-          "/static/app.js",
-          "/manifest.webmanifest",
-        ]),
+        cache.addAll(["/manifest.webmanifest"]),
       )
       .catch(() => {}),
   );
@@ -35,9 +30,16 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(fetch(request));
     return;
   }
-  // Documentos: siempre red (evita pantalla "Not Found" por caché vieja)
-  if (request.mode === "navigate" || request.headers.get("accept")?.includes("text/html")) {
-    event.respondWith(fetch(request));
+  // HTML y JS/CSS: siempre red primero (evita navegación rota por caché vieja)
+  if (
+    request.mode === "navigate" ||
+    request.headers.get("accept")?.includes("text/html") ||
+    url.pathname.endsWith(".js") ||
+    url.pathname.endsWith(".css")
+  ) {
+    event.respondWith(
+      fetch(request).catch(() => caches.match(request)),
+    );
     return;
   }
   event.respondWith(
