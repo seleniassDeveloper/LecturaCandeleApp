@@ -4,127 +4,219 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#070a12" />
-  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>Ceromancia | Lectura de Velas</title>
+  <meta name="description" content="Lectura asistida de velas: llama, cera y residuos." />
+  <title>Ceromancia CV</title>
   <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="icon" href="/static/icons/icon-192.png" sizes="192x192" />
   <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
-  <link rel="stylesheet" href="/static/styles.css?v=29" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
-  <div class="bg-mystic"></div>
-
-  <div class="app-container">
-    <div class="top-arch"></div>
-    
-    <!-- Screen 1: Intro -->
-    <div id="screen-intro" class="screen intro-screen active">
-      <div class="hero-frame">
-        <img src="/static/hero.png" alt="Ceromancia Hero" />
-      </div>
-      <h1 class="title-main">Ceromancia</h1>
-      <p class="subtitle-main">Lectura Asistida</p>
-      <p style="margin-bottom: 40px; color: rgba(253, 245, 232, 0.7); line-height: 1.6;">
-        La energía de tu vela, leída con sabiduría ancestral e inteligencia moderna.
-      </p>
-      <button class="btn-comenzar" id="start-btn">
-        Comenzar Lectura
-      </button>
-    </div>
-
-    <!-- Screen 2: Wizard -->
-    <div id="screen-wizard" class="screen">
-      <div class="step-header">
-        <h2 class="title-main" style="font-size: 1.2rem;">Ceromancia</h2>
-        <div class="step-dots">
-          <div class="dot active" data-step="1"></div>
-          <div class="dot" data-step="2"></div>
-          <div class="dot" data-step="3"></div>
-        </div>
-      </div>
-
-      <div class="wizard-card" id="step-1-content">
-        <h3 style="font-family: 'Cinzel', serif; color: var(--oro); margin-top: 0;">Tu imagen</h3>
-        <p style="font-size: 0.85rem; color: var(--texto-dim); margin-bottom: 20px;">
-          Foto nítida de la vela encendida. La intención es opcional; si la escribes, el análisis se afina.
-        </p>
-        
-        <div id="dropzone" style="border: 1px dashed var(--oro); border-radius: 15px; padding: 40px 20px; text-align: center; cursor: pointer; background: rgba(212, 175, 55, 0.05);">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--oro)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          <p style="color: var(--oro); margin-top: 10px; font-size: 0.9rem;">Toca para elegir foto</p>
-          <input type="file" id="file" hidden accept="image/*" />
-        </div>
-        
-        <div id="preview-container" style="margin-top: 20px; display: none;">
-          <img id="preview" style="width: 100%; border-radius: 12px; border: 1px solid var(--oro);" />
-          <button class="btn-comenzar" id="confirm-upload-btn" style="width: 100%; margin-top: 20px;">Confirmar Foto</button>
-        </div>
-      </div>
-
-      <!-- Step 2: Intention -->
-      <div class="wizard-card" id="step-2-content" style="display: none;">
-        <h3 style="font-family: 'Cinzel', serif; color: var(--oro); margin-top: 0;">Intención</h3>
-        <textarea id="intencion" placeholder="Ej: trabajo, amor, protección..." style="width: 100%; background: #000; border: 1px solid var(--oro); border-radius: 12px; padding: 15px; color: white; min-height: 120px; margin-bottom: 20px; font-family: inherit;"></textarea>
-        <button class="btn-comenzar" id="analyze-btn" style="width: 100%;">Analizar Vela</button>
-      </div>
-
-      <!-- Step 3: Results -->
-      <div class="wizard-card" id="step-3-content" style="display: none;">
-        <div id="results-container">
-           <div style="text-align: center; padding: 30px 0;" id="analyzing-state">
-              <p style="color: var(--oro);">Consultando a los astros...</p>
-           </div>
-        </div>
-        <button class="btn-comenzar" id="restart-btn" style="width: 100%; margin-top: 20px;">Nueva Lectura</button>
-      </div>
-    </div>
-
-    <!-- Screen: Guía -->
-    <div id="screen-guide" class="screen">
-      <h2 class="title-main" style="font-size: 1.5rem; margin-bottom: 12px;">Guía de ceromancia</h2>
-      <div class="wizard-card guide-scroll" style="width: 100%; text-align: left;">
-        <h3 class="guide-block__title">¿Qué es la ceromancia?</h3>
-        <p class="guide-block__text">Lectura simbólica de cómo arde la vela: llama, goteos de cera y residuos en el plato. Esta app asiste con visión por computadora; el mensaje es orientativo.</p>
-        <h3 class="guide-block__title">Cómo fotografiar</h3>
-        <p class="guide-block__text">Luz suave, vela centrada y llama visible. Evita flash directo. Formatos JPEG, PNG o HEIC (máx. 12 MB).</p>
-        <h3 class="guide-block__title">La llama y la cera</h3>
-        <p class="guide-block__text">La llama habla de vitalidad o inestabilidad; la cera y los restos, de bloqueos, liberación o mensajes en capas.</p>
-        <h3 class="guide-block__title">Intención opcional</h3>
-        <p class="guide-block__text">Si escribes para qué encendiste la vela, el análisis ajusta el lenguaje. No es obligatorio.</p>
-        <p class="guide-disclaimer">Las lecturas son orientativas. No sustituyen el criterio humano ni prácticas espirituales reales.</p>
-      </div>
-    </div>
-
-    <!-- Screen 3: History (Mis Lecturas) -->
-    <div id="screen-history" class="screen">
-      <h2 class="title-main" style="font-size: 1.5rem; margin-bottom: 20px;">Mis Lecturas</h2>
-      <div id="history-list" style="width: 100%; display: grid; gap: 15px;">
-        <p style="color: var(--texto-dim); text-align: center; font-style: italic; margin-top: 40px;">
-          Tus lecturas recientes aparecerán aquí una vez que realices el análisis.
-        </p>
-      </div>
-    </div>
-
-
-    <!-- Nav Bar -->
-    <nav class="nav-bar" id="app-nav">
-      <button type="button" class="nav-link active" id="nav-home" data-screen="screen-intro">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>Inicio</span>
-      </button>
-      <button type="button" class="nav-link" id="nav-history" data-screen="screen-history">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
-        <span>Lecturas</span>
-      </button>
-      <button type="button" class="nav-link" id="nav-guide" data-screen="screen-guide">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span>Guía</span>
-      </button>
-    </nav>
+  <div class="bg-aurora" aria-hidden="true"></div>
+  <div class="mystic-field" aria-hidden="true">
+    <div class="mystic-grid"></div>
+    <div class="nebula nebula--a"></div>
+    <div class="nebula nebula--b"></div>
+    <div class="nebula nebula--c"></div>
+    <div class="sigil-ring"></div>
+    <div class="star-dust"></div>
+  </div>
+  <div class="bg-noise" aria-hidden="true"></div>
+  <div class="ember-layer" aria-hidden="true">
+    <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+    <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+    <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+    <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+    <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+    <span class="ember"></span><span class="ember"></span>
   </div>
 
-  <script src="/static/app.js?v=28"></script>
+  <div class="page page--studio" id="appPage" data-wizard-step="1">
+    <div class="app-shell app-shell--studio" id="wizardStudioShell">
+      <header class="shell-header">
+        <div class="lang-switch" role="group" data-i18n-aria="lang_aria" aria-label="Idioma">
+          <button type="button" class="lang-btn lang-btn--active" data-lang="es" aria-pressed="true">ES</button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" class="lang-btn" data-lang="pt" aria-pressed="false">PT</button>
+        </div>
+        <div class="shell-header__center">
+          <div class="shell-hero-art" aria-hidden="true">
+            <svg class="shell-hero-art__svg" viewBox="0 0 280 96" width="220" height="76" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="arcana-sun-gold" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#f8e8c4" />
+                  <stop offset="45%" stop-color="#d4a853" />
+                  <stop offset="100%" stop-color="#8a6a2f" />
+                </linearGradient>
+                <linearGradient id="arcana-sun-glow" x1="50%" y1="0%" x2="50%" y2="100%">
+                  <stop offset="0%" stop-color="rgba(212,168,83,0.45)" />
+                  <stop offset="100%" stop-color="rgba(212,168,83,0)" />
+                </linearGradient>
+              </defs>
+              <ellipse cx="140" cy="88" rx="118" ry="36" fill="url(#arcana-sun-glow)" />
+              <g fill="none" stroke="url(#arcana-sun-gold)" stroke-width="1.15" stroke-linecap="round" opacity="0.9">
+                <path d="M140 12v14M96 24l12 10M184 24l-12 10M72 44l14 6M208 44l-14 6M60 68h14M206 68h14" />
+                <path d="M140 32c-22 0-40 18-40 40h80c0-22-18-40-40-40z" fill="rgba(10,12,22,0.35)" stroke-width="1.2" />
+                <circle cx="140" cy="58" r="10" fill="none" stroke-width="1.2" />
+              </g>
+            </svg>
+          </div>
+          <p class="shell-kicker" data-i18n="shell_kicker">Lectura asistida</p>
+          <h1 class="shell-title" data-i18n="shell_title">Ceromancia</h1>
+          <nav
+            class="tab-strip flow-stepper flow-stepper--vertical"
+            data-i18n-aria="nav_sections_aria"
+            aria-label="Secciones"
+          >
+            <ol class="flow-stepper__list">
+              <li class="flow-stepper__step">
+                <button type="button" class="tab tab--active flow-stepper__link" data-wizard-go="1" aria-current="step">
+                  <span class="flow-stepper__num" aria-hidden="true">1</span>
+                  <span class="flow-stepper__label" data-i18n="tab_vela">Tu vela</span>
+                </button>
+              </li>
+              <li class="flow-stepper__step">
+                <button type="button" class="tab flow-stepper__link" data-wizard-go="2">
+                  <span class="flow-stepper__num" aria-hidden="true">2</span>
+                  <span class="flow-stepper__label" data-i18n="tab_intention">Intención · opc.</span>
+                </button>
+              </li>
+              <li class="flow-stepper__step">
+                <button type="button" class="tab flow-stepper__link" data-wizard-go="3" id="stepperBtn3" disabled>
+                  <span class="flow-stepper__num" aria-hidden="true">3</span>
+                  <span class="flow-stepper__label" data-i18n="tab_reading">Lectura</span>
+                </button>
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </header>
+
+      <div class="shell-body shell-body--studio" id="wizardStudioBody">
+        <div class="wizard-viewport">
+          <div class="wizard-viewport__slides">
+            <div class="wizard-step wizard-step--card" id="wizardStep1" data-wizard-step="1" role="region" aria-labelledby="sec-vela">
+            <section id="uploadPanel" class="flow-section flow-section--wizard" aria-labelledby="sec-vela">
+              <h2 id="sec-vela" class="block-title" tabindex="-1" data-i18n="block_your_image">Tu imagen</h2>
+              <p class="shell-instructions" data-i18n="shell_instructions_step1_html" data-i18n-html="1">
+                Elige o arrastra una foto <strong>nítida</strong> de la vela encendida. Formatos JPEG, PNG o HEIC (máx. 12&nbsp;MB).
+              </p>
+
+              <label class="dropzone" id="dropzone">
+                <span class="dropzone-visual" aria-hidden="true">
+                  <span class="dropzone-icon">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M4 7a2 2 0 012-2h2.5l1-1h5l1 1H18a2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                      <circle cx="12" cy="13" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                  </span>
+                  <span class="dropzone-title" data-i18n="dropzone_title">Toca para elegir foto</span>
+                  <span class="dropzone-hint" data-i18n="dropzone_hint" data-i18n-html="1">Cámara o galería · JPEG, PNG, HEIC · máx. 12&nbsp;MB</span>
+                </span>
+                <input
+                  type="file"
+                  id="file"
+                  name="file"
+                  accept="image/*,image/heic,image/heif,.heic,.heif"
+                  class="file-input-overlay"
+                />
+              </label>
+              <p class="file-status" id="fileStatus" hidden aria-live="polite"></p>
+              <button type="button" class="btn-ghost" id="changePhotoBtn" hidden data-i18n="change_photo">Cambiar foto</button>
+
+              <div class="preview-wrap" id="previewWrap" hidden>
+                <div class="preview-frame">
+                  <img id="preview" class="preview-img" alt="Vista previa de la foto" data-i18n-alt="preview_alt" />
+                </div>
+                <p class="preview-note" id="previewNote" hidden></p>
+              </div>
+            </section>
+
+            <button type="button" class="btn-primary" id="wizardContinueBtn" disabled>
+              <span class="btn-continue-label" data-i18n="btn_continue">Siguiente</span>
+            </button>
+          </div>
+
+            <div class="wizard-step wizard-step--card" id="wizardStep2" data-wizard-step="2" role="region" aria-labelledby="sec-intencion" hidden>
+            <button type="button" class="btn-wizard-back" id="wizardBackBtn">
+              <span data-i18n="btn_back">Atrás</span>
+            </button>
+
+            <section class="flow-section intention-block" id="intentionBlock" aria-labelledby="sec-intencion">
+              <h2 id="sec-intencion" class="block-title" tabindex="-1" data-i18n="block_intention_title">Intención (opcional)</h2>
+              <p class="intention-lede" data-i18n="intention_lede">
+                Puedes dejarlo vacío. Si indicas para qué encendiste la vela o qué contexto importa, la lectura y «Otras pistas» se ajustan con más precisión.
+              </p>
+              <label for="intencion" class="sr-only" data-i18n="sr_only_intention">Intención opcional para afinar la lectura</label>
+              <textarea
+                id="intencion"
+                class="intention-textarea"
+                name="intencion"
+                maxlength="400"
+                rows="2"
+                data-i18n-placeholder="intention_placeholder"
+                placeholder="Ej.: trabajo, familia, agradecer, protección… (opcional, para más precisión)"
+              ></textarea>
+              <p class="intention-counter" id="intencionCounter" aria-live="polite">0 / 400</p>
+              <div class="intention-context-head">
+                <span class="intention-quick-label" data-i18n="context_label">Contexto</span>
+                <span class="intention-quick-hint" data-i18n="context_hint">Opcional · más precisión si eliges uno</span>
+              </div>
+              <div class="intention-chips intention-chips--cloud" role="group" aria-label="Contexto opcional para afinar la precisión">
+                <button type="button" class="chip chip--tile" data-intent-id="trabajo"><span class="chip-glow chip-glow--coral"></span><span class="chip-label">Trabajo</span></button>
+                <button type="button" class="chip chip--tile" data-intent-id="amor"><span class="chip-glow chip-glow--rose"></span><span class="chip-label">Amor</span></button>
+                <button type="button" class="chip chip--tile" data-intent-id="dinero"><span class="chip-glow chip-glow--mint"></span><span class="chip-label">Dinero</span></button>
+                <button type="button" class="chip chip--tile" data-intent-id="proteccion"><span class="chip-glow chip-glow--sky"></span><span class="chip-label">Protección</span></button>
+                <button type="button" class="chip chip--tile" data-intent-id="salud"><span class="chip-glow chip-glow--lav"></span><span class="chip-label">Salud</span></button>
+                <button type="button" class="chip chip--tile" data-intent-id="guia"><span class="chip-glow chip-glow--gold"></span><span class="chip-label">Guía</span></button>
+              </div>
+            </section>
+
+            <button type="button" class="btn-primary" id="analyzeBtn" disabled>
+              <span class="btn-primary-label">Analizar imagen</span>
+            </button>
+          </div>
+          </div>
+
+          <p class="form-error wizard-viewport__error" id="error" role="alert" hidden></p>
+        </div>
+      </div>
+    </div>
+
+    <section class="wizard-results-screen wizard-results-screen--fill" id="results" hidden aria-labelledby="results-heading">
+      <div class="reading-veil" aria-hidden="true"></div>
+      <div class="reading-layout">
+        <div class="reading-layout__inner">
+          <p class="reading-reveal" data-i18n="tb_your_reading">Tu lectura</p>
+          <h2 id="results-heading" class="reading-main-title" data-i18n="results_heading">Signo y mensaje</h2>
+          <div id="intentionBridge" class="intention-bridge intention-bridge--reading" hidden></div>
+          <div id="principal" class="card card--principal card--reading-oracle"></div>
+
+          <h3 class="reading-subheading" id="alt-heading" data-i18n="subheading_other_clues">Otras pistas</h3>
+          <ul id="alternatives" class="alt-cards alt-cards--reading" aria-labelledby="alt-heading"></ul>
+
+          <button type="button" class="btn-new-reading" id="newReadingBtn">
+            <span data-i18n="btn_new_reading">Nueva lectura</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer" id="appFooter">
+      <p class="footer__mystic" data-i18n="footer_mystic_quote">
+        La luz que enciendes afuera también ilumina tu camino interior.
+      </p>
+      <p data-i18n="footer_disclaimer">
+        Las lecturas son orientativas. No sustituyen el criterio humano ni prácticas espirituales reales.
+      </p>
+    </footer>
+  </div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <script src="/static/i18n.js"></script>
+  <script src="/static/app.js"></script>
 </body>
 </html>

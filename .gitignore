@@ -7,9 +7,12 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .DS_Store
+<<<<<<< HEAD
 .env
 .env.*
 *.jks
 *.keystore
 android-twa/app/build/
 android-twa/.gradle/
+=======
+>>>>>>> b1666c4b39d1500f1ebd65c9ef0bb0d85c39c92c

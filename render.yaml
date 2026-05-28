@@ -9,8 +9,11 @@ services:
     envVars:
       - key: PYTHONUNBUFFERED
         value: "1"
+<<<<<<< HEAD
       # Tras bubblewrap build, rellena en el panel de Render (o aquí):
       # - key: ANDROID_PACKAGE_NAME
       #   value: com.ceromancia.lecturavelas
       # - key: ANDROID_SHA256_FINGERPRINTS
       #   sync: false   # pega la huella SHA-256 del keystore
+=======
+>>>>>>> b1666c4b39d1500f1ebd65c9ef0bb0d85c39c92c
