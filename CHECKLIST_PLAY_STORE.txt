@@ -1,0 +1,45 @@
+CEROMANCIA — CHECKLIST GOOGLE PLAY STORE
+=========================================
+
+FASE 1 — GitHub
+[ ] Repo creado en GitHub
+[ ] Código subido (git push)
+
+FASE 2 — Web HTTPS
+[ ] App desplegada (Render O Cloud Run)
+[ ] URL anotada: _________________________________
+[ ] / abre la app
+[ ] /api/health responde ok
+[ ] /privacidad abre (con tu email editado)
+
+FASE 3 — Play Console
+[ ] Cuenta desarrollador pagada (~25 USD)
+[ ] App "Ceromancia" creada en consola
+
+FASE 4 — Android AAB
+[ ] npm install -g @bubblewrap/cli
+[ ] bubblewrap init con tu URL
+[ ] bubblewrap build → tienes .aab
+[ ] Keystore guardado en lugar seguro
+
+FASE 5 — Asset Links
+[ ] Huella SHA256 copiada (script mostrar-huella-android.sh)
+[ ] Variables ANDROID_* en Render/Cloud Run
+[ ] /.well-known/assetlinks.json OK en navegador
+
+FASE 6 — Ficha tienda
+[ ] Icono 512
+[ ] 2+ capturas móvil
+[ ] Descripciones
+[ ] Clasificación contenido
+[ ] Seguridad de datos (fotos)
+[ ] URL privacidad
+
+FASE 7 — Publicar
+[ ] AAB subido (prueba interna o producción)
+[ ] Testers añadidos (opcional)
+[ ] Enviado a revisión Google
+
+MI URL: 
+MI EMAIL EN PRIVACIDAD:
+FECHA ENVÍO REVISIÓN:

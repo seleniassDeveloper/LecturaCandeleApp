@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070a12" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Ceromancia | Lectura de Velas</title>
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/static/icons/icon-192.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
+  <link rel="stylesheet" href="/static/styles.css?v=29" />
+</head>
+<body>
+  <div class="bg-mystic"></div>
+
+  <div class="app-container">
+    <div class="top-arch"></div>
+    
+    <!-- Screen 1: Intro -->
+    <div id="screen-intro" class="screen intro-screen active">
+      <div class="hero-frame">
+        <img src="/static/hero.png" alt="Ceromancia Hero" />
+      </div>
+      <h1 class="title-main">Ceromancia</h1>
+      <p class="subtitle-main">Lectura Asistida</p>
+      <p style="margin-bottom: 40px; color: rgba(253, 245, 232, 0.7); line-height: 1.6;">
+        La energía de tu vela, leída con sabiduría ancestral e inteligencia moderna.
+      </p>
+      <button class="btn-comenzar" id="start-btn">
+        Comenzar Lectura
+      </button>
+    </div>
+
+    <!-- Screen 2: Wizard -->
+    <div id="screen-wizard" class="screen">
+      <div class="step-header">
+        <h2 class="title-main" style="font-size: 1.2rem;">Ceromancia</h2>
+        <div class="step-dots">
+          <div class="dot active" data-step="1"></div>
+          <div class="dot" data-step="2"></div>
+          <div class="dot" data-step="3"></div>
+        </div>
+      </div>
+
+      <div class="wizard-card" id="step-1-content">
+        <h3 style="font-family: 'Cinzel', serif; color: var(--oro); margin-top: 0;">Tu imagen</h3>
+        <p style="font-size: 0.85rem; color: var(--texto-dim); margin-bottom: 20px;">
+          Foto nítida de la vela encendida. La intención es opcional; si la escribes, el análisis se afina.
+        </p>
+        
+        <div id="dropzone" style="border: 1px dashed var(--oro); border-radius: 15px; padding: 40px 20px; text-align: center; cursor: pointer; background: rgba(212, 175, 55, 0.05);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--oro)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <p style="color: var(--oro); margin-top: 10px; font-size: 0.9rem;">Toca para elegir foto</p>
+          <input type="file" id="file" hidden accept="image/*" />
+        </div>
+        
+        <div id="preview-container" style="margin-top: 20px; display: none;">
+          <img id="preview" style="width: 100%; border-radius: 12px; border: 1px solid var(--oro);" />
+          <button class="btn-comenzar" id="confirm-upload-btn" style="width: 100%; margin-top: 20px;">Confirmar Foto</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Intention -->
+      <div class="wizard-card" id="step-2-content" style="display: none;">
+        <h3 style="font-family: 'Cinzel', serif; color: var(--oro); margin-top: 0;">Intención</h3>
+        <textarea id="intencion" placeholder="Ej: trabajo, amor, protección..." style="width: 100%; background: #000; border: 1px solid var(--oro); border-radius: 12px; padding: 15px; color: white; min-height: 120px; margin-bottom: 20px; font-family: inherit;"></textarea>
+        <button class="btn-comenzar" id="analyze-btn" style="width: 100%;">Analizar Vela</button>
+      </div>
+
+      <!-- Step 3: Results -->
+      <div class="wizard-card" id="step-3-content" style="display: none;">
+        <div id="results-container">
+           <div style="text-align: center; padding: 30px 0;" id="analyzing-state">
+              <p style="color: var(--oro);">Consultando a los astros...</p>
+           </div>
+        </div>
+        <button class="btn-comenzar" id="restart-btn" style="width: 100%; margin-top: 20px;">Nueva Lectura</button>
+      </div>
+    </div>
+
+    <!-- Screen: Guía -->
+    <div id="screen-guide" class="screen">
+      <h2 class="title-main" style="font-size: 1.5rem; margin-bottom: 12px;">Guía de ceromancia</h2>
+      <div class="wizard-card guide-scroll" style="width: 100%; text-align: left;">
+        <h3 class="guide-block__title">¿Qué es la ceromancia?</h3>
+        <p class="guide-block__text">Lectura simbólica de cómo arde la vela: llama, goteos de cera y residuos en el plato. Esta app asiste con visión por computadora; el mensaje es orientativo.</p>
+        <h3 class="guide-block__title">Cómo fotografiar</h3>
+        <p class="guide-block__text">Luz suave, vela centrada y llama visible. Evita flash directo. Formatos JPEG, PNG o HEIC (máx. 12 MB).</p>
+        <h3 class="guide-block__title">La llama y la cera</h3>
+        <p class="guide-block__text">La llama habla de vitalidad o inestabilidad; la cera y los restos, de bloqueos, liberación o mensajes en capas.</p>
+        <h3 class="guide-block__title">Intención opcional</h3>
+        <p class="guide-block__text">Si escribes para qué encendiste la vela, el análisis ajusta el lenguaje. No es obligatorio.</p>
+        <p class="guide-disclaimer">Las lecturas son orientativas. No sustituyen el criterio humano ni prácticas espirituales reales.</p>
+      </div>
+    </div>
+
+    <!-- Screen 3: History (Mis Lecturas) -->
+    <div id="screen-history" class="screen">
+      <h2 class="title-main" style="font-size: 1.5rem; margin-bottom: 20px;">Mis Lecturas</h2>
+      <div id="history-list" style="width: 100%; display: grid; gap: 15px;">
+        <p style="color: var(--texto-dim); text-align: center; font-style: italic; margin-top: 40px;">
+          Tus lecturas recientes aparecerán aquí una vez que realices el análisis.
+        </p>
+      </div>
+    </div>
+
+
+    <!-- Nav Bar -->
+    <nav class="nav-bar" id="app-nav">
+      <button type="button" class="nav-link active" id="nav-home" data-screen="screen-intro">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Inicio</span>
+      </button>
+      <button type="button" class="nav-link" id="nav-history" data-screen="screen-history">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
+        <span>Lecturas</span>
+      </button>
+      <button type="button" class="nav-link" id="nav-guide" data-screen="screen-guide">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>Guía</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="/static/app.js?v=28"></script>
+</body>
+</html>

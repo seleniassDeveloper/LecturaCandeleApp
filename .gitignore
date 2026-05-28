@@ -1,0 +1,15 @@
+.venv/
+.venv*/
+__pycache__/
+*.py[cod]
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+.env
+.env.*
+*.jks
+*.keystore
+android-twa/app/build/
+android-twa/.gradle/

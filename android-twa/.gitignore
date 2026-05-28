@@ -1,0 +1,10 @@
+# Bubblewrap / Android — no versionar secretos ni builds
+*.jks
+*.keystore
+android.keystore
+signingKey.properties
+local.properties
+app/build/
+build/
+.gradle/
+.idea/

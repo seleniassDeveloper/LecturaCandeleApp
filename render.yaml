@@ -1,0 +1,16 @@
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: ceromancia-velas
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      # Tras bubblewrap build, rellena en el panel de Render (o aquí):
+      # - key: ANDROID_PACKAGE_NAME
+      #   value: com.ceromancia.lecturavelas
+      # - key: ANDROID_SHA256_FINGERPRINTS
+      #   sync: false   # pega la huella SHA-256 del keystore
