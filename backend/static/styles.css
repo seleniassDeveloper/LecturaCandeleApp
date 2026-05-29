@@ -514,6 +514,15 @@ body.view-wizard {
   margin: 0;
 }
 
+.wizard-error {
+  color: #ff8a8a;
+  text-align: center;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0.5rem;
+}
+
 .step-header {
   margin: 0;
   text-align: center;

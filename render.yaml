@@ -6,6 +6,7 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     healthCheckPath: /api/health
+    maxShutdownDelaySeconds: 60
     envVars:
       - key: PYTHONUNBUFFERED
         value: "1"

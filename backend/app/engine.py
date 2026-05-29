@@ -9,11 +9,9 @@ import tempfile
 from io import BytesIO
 from typing import Any, Dict, List, Optional
 
-import cv2
 import numpy as np
 from PIL import Image, ImageOps
 
-from .cv_features import extract_features
 from .intention import (
     build_analisis_pista_secundaria,
     build_puente_intencion,
@@ -23,6 +21,23 @@ from .symbols import CLASS_ORDER, PATTERNS
 from .tf_classifier import predict_logits, softmax
 
 _heif_registered = False
+_cv2_mod = None
+
+
+def _cv2():
+    """Importa OpenCV solo cuando hace falta (arranque más rápido en Render)."""
+    global _cv2_mod
+    if _cv2_mod is None:
+        import cv2
+
+        _cv2_mod = cv2
+    return _cv2_mod
+
+
+def warmup() -> None:
+    """Precarga OpenCV (opcional, p. ej. /api/ready)."""
+    _cv2()
+    from .cv_features import extract_features  # noqa: F401, PLC0415
 
 
 def _register_heif_once() -> None:
@@ -81,7 +96,8 @@ def _decode_via_macos_sips(data: bytes) -> Optional[np.ndarray]:
                     timeout=90,
                 )
                 if r.returncode == 0 and os.path.isfile(outp):
-                    img = cv2.imread(outp, cv2.IMREAD_COLOR)
+                    cv = _cv2()
+                    img = cv.imread(outp, cv.IMREAD_COLOR)
                     if img is not None:
                         return img
         except (OSError, subprocess.SubprocessError):
@@ -96,7 +112,8 @@ def _decode_via_pillow(data: bytes) -> Optional[np.ndarray]:
         pil = ImageOps.exif_transpose(pil)
         pil = pil.convert("RGB")
         rgb = np.asarray(pil, dtype=np.uint8)
-        return cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
+        cv = _cv2()
+        return cv.cvtColor(rgb, cv.COLOR_RGB2BGR)
     except Exception:
         return None
 
@@ -110,8 +127,9 @@ def decode_upload(data: bytes) -> np.ndarray:
     if not data:
         raise ValueError("El archivo está vacío.")
 
+    cv = _cv2()
     arr = np.frombuffer(data, dtype=np.uint8)
-    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+    img = cv.imdecode(arr, cv.IMREAD_COLOR)
     if img is not None:
         return img
 
@@ -147,6 +165,8 @@ def analyze_bgr(
     top_k: int = 3,
     intencion: Optional[str] = None,
 ) -> Dict[str, Any]:
+    from .cv_features import extract_features  # noqa: PLC0415
+
     fv = extract_features(bgr)
     logits = predict_logits(fv.values)
     probs = softmax(logits)

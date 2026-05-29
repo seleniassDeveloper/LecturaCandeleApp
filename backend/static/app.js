@@ -1,5 +1,26 @@
 const $ = (id) => document.getElementById(id);
 
+async function fetchWithRetry(url, options, attempts = 4) {
+  let lastError = null;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const response = await fetch(url, options);
+      if ((response.status === 502 || response.status === 503) && i < attempts - 1) {
+        await new Promise((r) => setTimeout(r, 3500 * (i + 1)));
+        continue;
+      }
+      return response;
+    } catch (err) {
+      lastError = err;
+      if (i < attempts - 1) {
+        await new Promise((r) => setTimeout(r, 3500 * (i + 1)));
+        continue;
+      }
+    }
+  }
+  throw lastError || new Error("Sin conexión con el servidor");
+}
+
 // Estado Global
 let history = JSON.parse(localStorage.getItem("ceromancia_history") || "[]");
 
@@ -117,10 +138,17 @@ function initApp() {
       formData.append("file", $("file").files[0]);
       formData.append("intencion", $("intencion").value);
 
-      const response = await fetch("/api/analizar", {
+      const response = await fetchWithRetry("/api/analizar", {
         method: "POST",
         body: formData,
       });
+
+      if (!response.ok) {
+        const errText = response.status === 502 || response.status === 503
+          ? "El servidor está despertando (plan gratuito). Espera un momento e inténtalo de nuevo."
+          : `Error del servidor (${response.status}).`;
+        throw new Error(errText);
+      }
 
       const data = await response.json();
 
@@ -136,8 +164,8 @@ function initApp() {
       renderResults(data);
     } catch (error) {
       if (resultsContainer) {
-        resultsContainer.innerHTML =
-          '<p style="color: #ff6b6b; text-align: center;">Error al conectar con el oráculo.</p>';
+        const msg = error?.message || "Error al conectar con el oráculo.";
+        resultsContainer.innerHTML = `<p class="wizard-error" role="alert">${msg}</p>`;
       }
     }
   });

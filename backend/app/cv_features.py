@@ -24,7 +24,7 @@ class FeatureVector:
     debug: Dict[str, Any]
 
 
-def _resize_max_side(bgr: np.ndarray, max_side: int = 960) -> np.ndarray:
+def _resize_max_side(bgr: np.ndarray, max_side: int = 640) -> np.ndarray:
     h, w = bgr.shape[:2]
     m = max(h, w)
     if m <= max_side:

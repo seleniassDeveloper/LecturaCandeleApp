@@ -10,7 +10,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
-from .engine import analyze_bgr, decode_upload
 from .symbols import PATTERNS
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
@@ -63,6 +62,18 @@ def health():
     return {"status": "ok"}
 
 
+@app.get("/api/ready")
+def ready():
+    """Comprueba que el motor de análisis (OpenCV) puede cargarse."""
+    try:
+        from .engine import warmup  # noqa: PLC0415
+
+        warmup()
+        return {"status": "ready"}
+    except Exception as e:
+        raise HTTPException(503, f"Motor no listo: {e}") from e
+
+
 @app.get("/api/patrones")
 def list_patrones():
     return {
@@ -91,6 +102,8 @@ async def analizar(
     raw = await file.read()
     if len(raw) > 12 * 1024 * 1024:
         raise HTTPException(413, "Imagen demasiado grande (máx. 12 MB).")
+    from .engine import analyze_bgr, decode_upload  # noqa: PLC0415 — carga OpenCV solo al analizar
+
     try:
         bgr = decode_upload(raw)
     except ValueError as e:
