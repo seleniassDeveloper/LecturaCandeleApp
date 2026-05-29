@@ -30,6 +30,13 @@ function showScreen(screenId) {
 
   if (screenId === "screen-history") renderHistory();
 
+  document.body.classList.remove("view-intro", "view-scroll");
+  if (screenId === "screen-intro") {
+    document.body.classList.add("view-intro");
+  } else if (screenId === "screen-guide" || screenId === "screen-history") {
+    document.body.classList.add("view-scroll");
+  }
+
   window.scrollTo(0, 0);
 }
 
@@ -132,6 +139,7 @@ function initApp() {
     showScreen("screen-intro");
   });
 
+  document.body.classList.add("view-intro");
   showScreen("screen-intro");
 }
 

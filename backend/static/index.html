@@ -11,7 +11,7 @@
   <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="icon" href="/static/icons/icon-192.png" sizes="192x192" />
   <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
-  <link rel="stylesheet" href="/static/styles.css?v=30" />
+  <link rel="stylesheet" href="/static/styles.css?v=31" />
 </head>
 <body>
   <div class="bg-mystic"></div>
@@ -21,17 +21,21 @@
     
     <!-- Screen 1: Intro -->
     <div id="screen-intro" class="screen intro-screen active">
-      <div class="hero-frame">
-        <img src="/static/hero.png" alt="Ceromancia Hero" />
+      <div class="intro-stack">
+        <div class="hero-frame">
+          <img src="/static/hero.png" alt="Ceromancia Hero" />
+        </div>
+        <div class="intro-copy">
+          <h1 class="title-main">Ceromancia</h1>
+          <p class="subtitle-main">Lectura Asistida</p>
+          <p class="intro-tagline">
+            La energía de tu vela, leída con sabiduría ancestral e inteligencia moderna.
+          </p>
+        </div>
+        <button class="btn-comenzar btn-comenzar--intro" id="start-btn" type="button">
+          Comenzar lectura
+        </button>
       </div>
-      <h1 class="title-main">Ceromancia</h1>
-      <p class="subtitle-main">Lectura Asistida</p>
-      <p class="intro-tagline">
-        La energía de tu vela, leída con sabiduría ancestral e inteligencia moderna.
-      </p>
-      <button class="btn-comenzar" id="start-btn" type="button">
-        Comenzar lectura
-      </button>
     </div>
 
     <!-- Screen 2: Wizard -->
@@ -125,6 +129,6 @@
     </nav>
   </div>
 
-  <script src="/static/app.js?v=30"></script>
+  <script src="/static/app.js?v=31"></script>
 </body>
 </html>
