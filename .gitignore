@@ -13,3 +13,9 @@ __pycache__/
 *.keystore
 android-twa/app/build/
 android-twa/.gradle/
+node_modules/
+www/
+android/
+.idea/
+*.iml
+local.properties

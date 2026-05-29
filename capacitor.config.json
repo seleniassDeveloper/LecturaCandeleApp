@@ -1,0 +1,11 @@
+{
+  "appId": "com.ceromancia.velas",
+  "appName": "Ceromancia",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": true
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

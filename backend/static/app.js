@@ -1,5 +1,13 @@
 const $ = (id) => document.getElementById(id);
 
+const API_BASE =
+  (typeof window !== "undefined" && window.CEROMANCIA_API_BASE) || "";
+
+function apiUrl(path) {
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return `${API_BASE}${p}`;
+}
+
 async function fetchWithRetry(url, options, attempts = 4) {
   let lastError = null;
   for (let i = 0; i < attempts; i++) {
@@ -138,7 +146,7 @@ function initApp() {
       formData.append("file", $("file").files[0]);
       formData.append("intencion", $("intencion").value);
 
-      const response = await fetchWithRetry("/api/analizar", {
+      const response = await fetchWithRetry(apiUrl("/api/analizar"), {
         method: "POST",
         body: formData,
       });
