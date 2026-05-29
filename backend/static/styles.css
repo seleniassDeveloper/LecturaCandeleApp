@@ -32,7 +32,8 @@ body.view-scroll {
   overflow: hidden;
 }
 
-body.view-intro {
+body.view-intro,
+body.view-wizard {
   overflow: hidden;
 }
 
@@ -218,8 +219,7 @@ body.view-intro {
 
 /* Pantallas con contenido largo: scroll solo dentro */
 #screen-guide.active,
-#screen-history.active,
-#screen-wizard.active {
+#screen-history.active {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -227,21 +227,295 @@ body.view-intro {
   overscroll-behavior: contain;
 }
 
-/* Wizard */
-.wizard-card {
+/* ——— Wizard: centrado, sin desborde horizontal ——— */
+.wizard-screen {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+}
+
+.wizard-stack {
   width: 100%;
   max-width: 21.5rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: clamp(0.5rem, 1.5vh, 0.85rem);
+  box-sizing: border-box;
+}
+
+.wizard-panel {
+  width: 100%;
+  min-width: 0;
+  flex: 0 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wizard-panel .wizard-card {
+  width: 100%;
+}
+
+.wizard-panel .wizard-card[hidden] {
+  display: none !important;
+}
+
+.wizard-card {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
   background: var(--tarjeta);
   border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 24px;
-  padding: 1.5rem 1.35rem;
+  border-radius: 20px;
+  padding: clamp(1rem, 3vw, 1.35rem);
   backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.wizard-card__title {
+  font-family: 'Cinzel', serif;
+  color: var(--oro);
+  font-size: clamp(0.9rem, 3.5vw, 1rem);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.5rem;
+}
+
+.wizard-card__text {
+  font-size: clamp(0.78rem, 2.8vw, 0.85rem);
+  color: var(--texto-dim);
+  line-height: 1.45;
+  margin: 0 0 1rem;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+.title-main--wizard {
+  font-size: clamp(1rem, 4vw, 1.2rem) !important;
+  letter-spacing: 0.16em !important;
+  margin: 0;
+}
+
+.dropzone {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  border: 1px dashed var(--oro);
+  border-radius: 14px;
+  padding: clamp(1.25rem, 4vh, 2rem) 1rem;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(212, 175, 55, 0.05);
+  touch-action: manipulation;
+}
+
+.dropzone[hidden] {
+  display: none !important;
+}
+
+.dropzone__label {
+  color: var(--oro);
+  margin: 0.65rem 0 0;
+  font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+}
+
+.preview-container {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.preview-container[hidden] {
+  display: none !important;
+}
+
+.preview-img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: min(28vh, 12rem);
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--oro);
+  box-sizing: border-box;
+}
+
+.wizard-textarea {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-height: clamp(5rem, 18vh, 7rem);
+  max-height: min(22vh, 9rem);
+  background: #000;
+  border: 1px solid var(--oro);
+  border-radius: 12px;
+  padding: 0.85rem;
+  color: var(--texto);
+  margin-bottom: 1rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: none;
+}
+
+.btn-comenzar--full {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.85rem 1rem;
+}
+
+.wizard-card--results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: min(58vh, 26rem);
+}
+
+.results-container {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.analyzing-state {
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.analyzing-state p {
+  color: var(--oro);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.analyzing-state[hidden] {
+  display: none !important;
+}
+
+/* Resultados de lectura */
+.reading-details {
+  animation: fadeIn 0.8s ease-out;
+  text-align: left;
+  width: 100%;
+  min-width: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reading-bridge {
+  background: rgba(212, 175, 55, 0.08);
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  margin-bottom: 1rem;
+}
+
+.reading-bridge p {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--texto);
+  font-style: italic;
+  margin: 0;
+}
+
+.reading-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.reading-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.reading-row__icon {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.reading-row__title {
+  display: block;
+  font-family: 'Cinzel', serif;
+  color: var(--oro);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.reading-row__text {
+  font-size: 0.8rem;
+  color: var(--texto-dim);
+  line-height: 1.45;
+  margin: 0;
+  word-wrap: break-word;
+}
+
+.reading-oracle {
+  text-align: center;
+  border-top: 1px solid rgba(212, 175, 55, 0.12);
+  padding-top: 1rem;
+}
+
+.reading-oracle__name {
+  font-family: 'Cinzel', serif;
+  color: var(--oro);
+  font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+  margin: 0 0 0.5rem;
+}
+
+.reading-oracle__quote {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--texto);
+  font-style: italic;
+  margin: 0;
+}
+
+.reading-advice {
+  background: rgba(155, 126, 212, 0.1);
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border-left: 3px solid rgba(155, 126, 212, 0.65);
+}
+
+.reading-advice__label {
+  display: block;
+  color: #c4a8f0;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.35rem;
+}
+
+.reading-advice__text {
+  font-size: 0.82rem;
+  color: var(--texto);
+  line-height: 1.45;
+  margin: 0;
 }
 
 .step-header {
-  margin-bottom: 20px;
+  margin: 0;
   text-align: center;
   flex-shrink: 0;
 }
@@ -387,6 +661,14 @@ body.view-intro {
 
 /* Pantallas muy bajas (iPhone SE, etc.) */
 @media (max-height: 640px) {
+  .wizard-card--results {
+    max-height: min(50vh, 22rem);
+  }
+
+  .dropzone {
+    padding: 1rem 0.75rem;
+  }
+
   .hero-frame {
     width: min(100%, 32vh, 13.5rem);
     height: min(32vh, 13.5rem);

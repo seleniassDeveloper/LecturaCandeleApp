@@ -30,9 +30,11 @@ function showScreen(screenId) {
 
   if (screenId === "screen-history") renderHistory();
 
-  document.body.classList.remove("view-intro", "view-scroll");
+  document.body.classList.remove("view-intro", "view-wizard", "view-scroll");
   if (screenId === "screen-intro") {
     document.body.classList.add("view-intro");
+  } else if (screenId === "screen-wizard") {
+    document.body.classList.add("view-wizard");
   } else if (screenId === "screen-guide" || screenId === "screen-history") {
     document.body.classList.add("view-scroll");
   }
@@ -49,9 +51,18 @@ function updateWizardUI(step) {
   const s1 = $("step-1-content");
   const s2 = $("step-2-content");
   const s3 = $("step-3-content");
-  if (s1) s1.style.display = step === 1 ? "block" : "none";
-  if (s2) s2.style.display = step === 2 ? "block" : "none";
-  if (s3) s3.style.display = step === 3 ? "block" : "none";
+  if (s1) {
+    if (step === 1) s1.removeAttribute("hidden");
+    else s1.setAttribute("hidden", "");
+  }
+  if (s2) {
+    if (step === 2) s2.removeAttribute("hidden");
+    else s2.setAttribute("hidden", "");
+  }
+  if (s3) {
+    if (step === 3) s3.removeAttribute("hidden");
+    else s3.setAttribute("hidden", "");
+  }
 }
 
 // Navegación inferior (delegación: funciona aunque el JS esté en caché parcial)
@@ -82,8 +93,8 @@ function initApp() {
       const reader = new FileReader();
       reader.onload = (ev) => {
         if ($("preview")) $("preview").src = ev.target.result;
-        if ($("preview-container")) $("preview-container").style.display = "block";
-        if ($("dropzone")) $("dropzone").style.display = "none";
+        if ($("preview-container")) $("preview-container").removeAttribute("hidden");
+        if ($("dropzone")) $("dropzone").setAttribute("hidden", "");
       };
       reader.readAsDataURL(file);
     }
@@ -96,8 +107,10 @@ function initApp() {
     const resultsContainer = $("results-container");
     const analyzingState = $("analyzing-state");
 
-    if (analyzingState) analyzingState.style.display = "block";
-    if (resultsContainer) resultsContainer.innerHTML = "";
+    if (resultsContainer) {
+      resultsContainer.innerHTML =
+        '<div class="analyzing-state" id="analyzing-state"><p>Consultando a los astros...</p></div>';
+    }
 
     try {
       const formData = new FormData();
@@ -126,15 +139,13 @@ function initApp() {
         resultsContainer.innerHTML =
           '<p style="color: #ff6b6b; text-align: center;">Error al conectar con el oráculo.</p>';
       }
-    } finally {
-      if (analyzingState) analyzingState.style.display = "none";
     }
   });
 
   $("restart-btn")?.addEventListener("click", () => {
     if ($("file")) $("file").value = "";
-    if ($("preview-container")) $("preview-container").style.display = "none";
-    if ($("dropzone")) $("dropzone").style.display = "block";
+    if ($("preview-container")) $("preview-container").setAttribute("hidden", "");
+    if ($("dropzone")) $("dropzone").removeAttribute("hidden");
     if ($("intencion")) $("intencion").value = "";
     showScreen("screen-intro");
   });
@@ -180,45 +191,38 @@ function renderResults(data) {
   const p = data.patron_principal;
 
   let html = `
-        <div class="reading-details" style="animation: fadeIn 0.8s ease-out; text-align: left;">
-            
+        <div class="reading-details">
             ${
               data.puente_intencion
                 ? `
-                <div style="background: rgba(212, 175, 55, 0.08); padding: 20px; border-radius: 18px; border: 1px solid rgba(212, 175, 55, 0.2); margin-bottom: 30px;">
-                    <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-main); font-style: italic; margin: 0;">"${data.puente_intencion}"</p>
+                <div class="reading-bridge">
+                    <p>"${data.puente_intencion}"</p>
                 </div>
             `
                 : ""
             }
-
-            <div style="display: grid; gap: 25px;">
-                <div style="display: flex; gap: 15px;">
-                    <div style="color: var(--oro); font-size: 1.2rem;">🔥</div>
+            <div class="reading-grid">
+                <div class="reading-row">
+                    <span class="reading-row__icon" aria-hidden="true">🔥</span>
                     <div>
-                        <strong style="display: block; font-family: 'Cinzel', serif; color: var(--oro); font-size: 0.9rem;">Visión de la Llama</strong>
-                        <p style="font-size: 0.85rem; color: var(--text-dim); margin: 4px 0;">${p.id.includes("llama") ? p.mensaje_simbolico : "La luz que emite tu vela es pura y constante, señal de una petición que ha sido escuchada por las fuerzas superiores."}</p>
+                        <strong class="reading-row__title">Visión de la llama</strong>
+                        <p class="reading-row__text">${p.id.includes("llama") ? p.mensaje_simbolico : "La luz que emite tu vela es pura y constante, señal de una petición escuchada."}</p>
                     </div>
                 </div>
-
-                <div style="display: flex; gap: 15px;">
-                    <div style="color: var(--oro); font-size: 1.2rem;">💧</div>
+                <div class="reading-row">
+                    <span class="reading-row__icon" aria-hidden="true">💧</span>
                     <div>
-                        <strong style="display: block; font-family: 'Cinzel', serif; color: var(--oro); font-size: 0.9rem;">Lenguaje de la Cera</strong>
-                        <p style="font-size: 0.85rem; color: var(--text-dim); margin: 4px 0;">${p.id.includes("cera") || p.id.includes("figura") ? p.mensaje_simbolico : "El descenso de la cera es armonioso, indicando que el camino se está allanando para que tus deseos fluyan sin resistencia."}</p>
+                        <strong class="reading-row__title">Lenguaje de la cera</strong>
+                        <p class="reading-row__text">${p.id.includes("cera") || p.id.includes("figura") ? p.mensaje_simbolico : "El descenso de la cera es armonioso; el camino se allana para tus deseos."}</p>
                     </div>
                 </div>
-
-                <div style="text-align: center; border-top: 1px solid rgba(212, 175, 55, 0.1); padding-top: 20px;">
-                    <h5 style="font-family: 'Cinzel', serif; color: var(--oro); font-size: 1.2rem; margin: 0 0 10px;">${p.nombre}</h5>
-                    <p style="font-size: 1rem; line-height: 1.7; color: var(--text-main); font-family: 'Playfair Display', serif; font-style: italic;">
-                        "${p.interpretacion || p.mensaje_simbolico}"
-                    </p>
+                <div class="reading-oracle">
+                    <h5 class="reading-oracle__name">${p.nombre}</h5>
+                    <p class="reading-oracle__quote">"${p.interpretacion || p.mensaje_simbolico}"</p>
                 </div>
-
-                <div style="background: rgba(155, 126, 212, 0.1); padding: 20px; border-radius: 12px; border-left: 4px solid var(--accent);">
-                    <strong style="display: block; color: var(--accent); font-size: 0.75rem; text-transform: uppercase; margin-bottom: 8px;">Guía Práctica del Oráculo</strong>
-                    <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5; margin: 0;">${getMysticalAdvice(p.id)}</p>
+                <div class="reading-advice">
+                    <strong class="reading-advice__label">Guía práctica del oráculo</strong>
+                    <p class="reading-advice__text">${getMysticalAdvice(p.id)}</p>
                 </div>
             </div>
         </div>
