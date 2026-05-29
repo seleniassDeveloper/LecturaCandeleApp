@@ -264,7 +264,8 @@ body.view-wizard {
   width: 100%;
 }
 
-.wizard-panel .wizard-card[hidden] {
+.wizard-panel .wizard-card[hidden],
+.wizard-panel .wizard-results[hidden] {
   display: none !important;
 }
 
@@ -374,20 +375,34 @@ body.view-wizard {
   padding: 0.85rem 1rem;
 }
 
-.wizard-card--results {
+/* Resultados: sin caja, contenido sobre el fondo */
+.wizard-results {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  max-height: min(58vh, 26rem);
+  align-items: stretch;
+  gap: clamp(0.75rem, 2vh, 1rem);
+  max-height: min(62vh, 28rem);
 }
 
 .results-container {
   flex: 1 1 auto;
   min-height: 0;
+  width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  padding: 0 0.15rem;
 }
 
 .analyzing-state {
@@ -419,11 +434,13 @@ body.view-wizard {
 }
 
 .reading-bridge {
-  background: rgba(212, 175, 55, 0.08);
-  padding: 0.85rem 1rem;
-  border-radius: 14px;
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  margin-bottom: 1rem;
+  background: transparent;
+  padding: 0 0 0.75rem;
+  border-radius: 0;
+  border: none;
+  border-left: 2px solid rgba(212, 175, 55, 0.45);
+  margin-bottom: 0.85rem;
+  padding-left: 0.85rem;
 }
 
 .reading-bridge p {
@@ -492,10 +509,12 @@ body.view-wizard {
 }
 
 .reading-advice {
-  background: rgba(155, 126, 212, 0.1);
-  padding: 0.85rem 1rem;
-  border-radius: 12px;
-  border-left: 3px solid rgba(155, 126, 212, 0.65);
+  background: transparent;
+  padding: 0.5rem 0 0;
+  border-radius: 0;
+  border: none;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  padding-top: 0.85rem;
 }
 
 .reading-advice__label {
@@ -670,8 +689,8 @@ body.view-wizard {
 
 /* Pantallas muy bajas (iPhone SE, etc.) */
 @media (max-height: 640px) {
-  .wizard-card--results {
-    max-height: min(50vh, 22rem);
+  .wizard-results {
+    max-height: min(52vh, 24rem);
   }
 
   .dropzone {
